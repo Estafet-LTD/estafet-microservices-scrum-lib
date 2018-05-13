@@ -12,9 +12,9 @@ node {
 		def pom = readFile('pom.xml');
 		snapshotVersion = new XmlSlurper().parseText(pom).version.text
 		def matcher = snapshotVersion =~ /(d+\.d+\.)(d+)(\-SNAPSHOT)/
-		int snapshotIntegral = matcher[0][2]
-		nextSnapshotVersion = "${matcher[0][1]}${snapshotIntegral+1}-SNAPSHOT"
-		releaseVersion = "${matcher[0][1]}${snapshotIntegral}"
+		int snapshotIntegral = matcher[0][1]
+		nextSnapshotVersion = "${matcher[0][0]}${snapshotIntegral+1}-SNAPSHOT"
+		releaseVersion = "${matcher[0][0]}${snapshotIntegral}"
 		println nextSnapshotVersion
 		println releaseVersion
 	}
