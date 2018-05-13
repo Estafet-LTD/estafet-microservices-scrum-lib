@@ -6,6 +6,4 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>estafet-microservices-scrum-lib-pageobjects</artifactId>
-  <groupId>estafet-microservices-scrum</groupId>
-  <version>0.0.1-SNAPSHOT</version>
 </project>
