@@ -11,9 +11,9 @@ node {
 	stage("increment version") {
 		println "read the file"
 		def pom = readFile('pom.xml');
-		println pom
+		//println pom
 		println "get the snapshot version from pom"
-		snapshotVersion = new XmlSlurper().parseText(pom).version
+		snapshotVersion = new XmlSlurper().parseText(pom).project.version.text
 		println snapshotVersion
 		def matcher = snapshotVersion =~ /(d+\.d+\.)(d+)(\-SNAPSHOT)/
 		/* println "get the snapshot integral"
