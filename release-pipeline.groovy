@@ -1,6 +1,6 @@
-node {
+node('maven') {
 
-	def nextSnapshotVersion;
+	def developmentVersion;
 	def releaseVersion
 
 	stage("checkout") {
@@ -8,15 +8,17 @@ node {
 	}
 	
 	stage("increment version") {
-		println "read the file"
 		def pom = readFile('pom.xml');
-		def snapshotVersion = new XmlSlurper().parseText(pom).version
-		def matcher = snapshotVersion =~ /(\d+\.\d+\.)(\d+)(\-SNAPSHOT)/
-		nextSnapshotVersion = "${matcher[0][1]}${matcher[0][2].toInteger()+1}-SNAPSHOT"
+		def matcher = new XmlSlurper().parseText(pom).version =~ /(\d+\.\d+\.)(\d+)(\-SNAPSHOT)/
+		developmentVersion = "${matcher[0][1]}${matcher[0][2].toInteger()+1}-SNAPSHOT"
 		releaseVersion = "${matcher[0][1]}${matcher[0][2]}"
-		println nextSnapshotVersion
-		println releaseVersion
 	}
+	
+	stage("perform release") {
+		withMaven(mavenSettingsConfig: 'microservices-scrum') {
+ 			sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}"
+		} 
+	}	
 	
 }
 
