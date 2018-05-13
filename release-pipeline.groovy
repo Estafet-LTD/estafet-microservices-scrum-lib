@@ -15,14 +15,14 @@ node {
 		snapshotVersion = new XmlSlurper().parseText(pom).version.text
 		println snapshotVersion
 		def matcher = snapshotVersion =~ /(d+\.d+\.)(d+)(\-SNAPSHOT)/
-		println "get the snapshot integral"
+		/* println "get the snapshot integral"
 		int snapshotIntegral = matcher[1]
 		println "get the nextSnapshotVersion"
 		nextSnapshotVersion = "${matcher[0]${snapshotIntegral+1}-SNAPSHOT"
 		println "get the releaseVersion"
 		releaseVersion = "${matcher[0]${snapshotIntegral}"
 		println nextSnapshotVersion
-		println releaseVersion
+		println releaseVersion */
 	}
 	
 }
