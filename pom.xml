@@ -16,8 +16,6 @@
 		<module>estafet-microservices-scrum-lib-pageobjects</module>
 	</modules>
 
-
-
 	<dependencies>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -33,9 +31,15 @@
 
 	<distributionManagement>
 		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
 			<id>nexus-snapshots</id>
 			<url>http://nexus.cicd.svc:8081/nexus/content/repositories/snapshots</url>
 		</snapshotRepository>
+		<repository>
+			<uniqueVersion>true</uniqueVersion>
+			<id>nexus-releases</id>
+			<url>http://nexus.cicd.svc:8081/nexus/content/repositories/releases</url>
+		</repository>
 	</distributionManagement>
 
 </project>
