@@ -1,6 +1,5 @@
 node {
 
-	def snapshotVersion;
 	def nextSnapshotVersion;
 	def releaseVersion
 
@@ -11,15 +10,10 @@ node {
 	stage("increment version") {
 		println "read the file"
 		def pom = readFile('pom.xml');
-		snapshotVersion = new XmlSlurper().parseText(pom).version
-		println snapshotVersion
+		def snapshotVersion = new XmlSlurper().parseText(pom).version
 		def matcher = snapshotVersion =~ /(\d+\.\d+\.)(\d+)(\-SNAPSHOT)/
-		println "get the snapshot integral"
-		def snapshotIntegral = matcher[0][1]
-		println "get the nextSnapshotVersion"
-		nextSnapshotVersion = "${matcher[0][1]}${snapshotIntegral}-SNAPSHOT"
-		println "get the releaseVersion"
-		releaseVersion = "${matcher[0][1]}${snapshotIntegral}"
+		nextSnapshotVersion = "${matcher[0][1]}${matcher[0][2].toInteger()+1}-SNAPSHOT"
+		releaseVersion = "${matcher[0][1]}${matcher[0][2]}"
 		println nextSnapshotVersion
 		println releaseVersion
 	}
