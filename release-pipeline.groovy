@@ -16,11 +16,11 @@ node {
 		println snapshotVersion
 		def matcher = snapshotVersion =~ /(d+\.d+\.)(d+)(\-SNAPSHOT)/
 		println "get the snapshot integral"
-		int snapshotIntegral = matcher[0][1]
+		int snapshotIntegral = matcher[1]
 		println "get the nextSnapshotVersion"
-		nextSnapshotVersion = "${matcher[0][0]}${snapshotIntegral+1}-SNAPSHOT"
+		nextSnapshotVersion = "${matcher[0]${snapshotIntegral+1}-SNAPSHOT"
 		println "get the releaseVersion"
-		releaseVersion = "${matcher[0][0]}${snapshotIntegral}"
+		releaseVersion = "${matcher[0]${snapshotIntegral}"
 		println nextSnapshotVersion
 		println releaseVersion
 	}
