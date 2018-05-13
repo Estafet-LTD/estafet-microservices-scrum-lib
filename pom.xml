@@ -79,9 +79,9 @@
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:git@github.com:Estafet-LTD/estafet-microservices-scrum-lib.git</connection>
+		<connection>http://github.com/Estafet-LTD/estafet-microservices-scrum-lib.git</connection>
 		<url>https://github.com/Estafet-LTD/estafet-microservices-scrum-lib</url>
-		<developerConnection>scm:git@github.com:Estafet-LTD/estafet-microservices-scrum-lib.git</developerConnection>
+		<developerConnection>http://github.com/Estafet-LTD/estafet-microservices-scrum-lib.git</developerConnection>
 	</scm>
 
 </project>
