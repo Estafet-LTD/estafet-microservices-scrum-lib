@@ -10,7 +10,7 @@ node {
 	
 	stage("increment version") {
 		def pom = readFile('pom.xml');
-		snapshotVersion = new XmlParser().parseText(json).version.text
+		snapshotVersion = new XmlSlurper().parseText(json).version.text
 		def matcher = snapshotVersion =~ /(d+\.d+\.)(d+)(\-SNAPSHOT)/
 		int snapshotIntegral = matcher[0][2]
 		nextSnapshotVersion = "${matcher[0][1]}${snapshotIntegral+1}-SNAPSHOT"
