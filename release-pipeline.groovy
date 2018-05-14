@@ -16,11 +16,8 @@ node('maven') {
 	
 	stage("perform release") {
 		 withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-		 	def credentialsFile = new File("~/.microservices-scrum-credentials")
-		 	def credentials = new Properties()
-			credentials.setProperty('username', env.USERNAME)
-			credentials.setProperty('password', env.PASSWORD)
-			credentialsFile.withWriterAppend( 'UTF-8' ) { fileWriter ->
+		 	def credentials = [username:env.USERNAME, password:env.PASSWORD]
+			new File(".microservices-scrum-credentials").withWriterAppend( 'UTF-8' ) { fileWriter ->
 			    fileWriter.writeLine ''
 			    credentials.each { key, value ->
 			        fileWriter.writeLine "$key=$value"
@@ -28,7 +25,7 @@ node('maven') {
 			}
             sh "git config --global user.email \"jenkins@estafet.com\""
             sh "git config --global user.name \"jenkins\""
-            sh "git config --global credential.helper 'store --file ~/.microservices-scrum-credentials'"
+            sh "git config --global credential.helper 'store --file .microservices-scrum-credentials'"
             withMaven(mavenSettingsConfig: 'microservices-scrum') {
  				sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}"
 			} 
