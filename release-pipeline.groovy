@@ -16,6 +16,9 @@ node('maven') {
 	
 	stage("perform release") {
 		 withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+		 	echo USERNAME
+		 	echo PASSWORD
+		 	sh 'echo $PASSWORD'
 		 	writeFile (file:".microservices-scrum-credentials", text:"username=${USERNAME}\npassword=${PASSWORD}")
 		 	def creds = readFile('.microservices-scrum-credentials')
 		 	println creds
