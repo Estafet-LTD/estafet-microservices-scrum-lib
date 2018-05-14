@@ -27,7 +27,7 @@ node('maven') {
 	}
 	
 	stage("perform release") {
-	 	writeFile (file:".microservices-scrum-credentials", text:"protocol=https\nhost=github.com\nusername=${username()}\npassword=${password()}")
+	 	writeFile (file:".microservices-scrum-credentials", text:"https://${username()}:${password()}@github.com")
 	 	def creds = readFile('.microservices-scrum-credentials')
 	 	println creds
         sh "git config --global user.email \"jenkins@estafet.com\""
