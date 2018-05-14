@@ -3,6 +3,18 @@ node('maven') {
 	def developmentVersion;
 	def releaseVersion
 	
+	def username() {
+	    withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+	        return USERNAME
+	    }
+	}
+	
+	def password() {
+	    withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+	        return PASSWORD
+	    }
+	}
+	
 	stage("checkout") {
 		git branch: "master", url: "https://github.com/Estafet-LTD/estafet-microservices-scrum-lib"
 	}
@@ -15,20 +27,15 @@ node('maven') {
 	}
 	
 	stage("perform release") {
-		 withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-		 	echo USERNAME
-		 	echo PASSWORD
-		 	sh 'echo $PASSWORD'
-		 	writeFile (file:".microservices-scrum-credentials", text:"username=${USERNAME}\npassword=${PASSWORD}")
-		 	def creds = readFile('.microservices-scrum-credentials')
-		 	println creds
-            sh "git config --global user.email \"jenkins@estafet.com\""
-            sh "git config --global user.name \"jenkins\""
-            sh "git config --global credential.helper 'store --file .microservices-scrum-credentials'"
-            withMaven(mavenSettingsConfig: 'microservices-scrum') {
- 				sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}"
-			} 
-        }
+	 	writeFile (file:".microservices-scrum-credentials", text:"username=${username()}\npassword=${password()}")
+	 	def creds = readFile('.microservices-scrum-credentials')
+	 	println creds
+        sh "git config --global user.email \"jenkins@estafet.com\""
+        sh "git config --global user.name \"jenkins\""
+        sh "git config --global credential.helper 'store --file .microservices-scrum-credentials'"
+        withMaven(mavenSettingsConfig: 'microservices-scrum') {
+			sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}"
+		} 
 	}	
 	
 }
