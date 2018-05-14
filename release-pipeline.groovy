@@ -27,7 +27,7 @@ node('maven') {
 	}
 	
 	stage("perform release") {
-		sh "git remote set-url origin https://${username()}:${password}@github.com/Estafet-LTD/estafet-microservices-scrum-lib"
+		sh "git remote set-url origin https://${username()}:${password()}@github.com/Estafet-LTD/estafet-microservices-scrum-lib"
         sh "git config --global user.email \"jenkins@estafet.com\""
         sh "git config --global user.name \"jenkins\""
         withMaven(mavenSettingsConfig: 'microservices-scrum') {
