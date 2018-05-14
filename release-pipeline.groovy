@@ -1,22 +1,10 @@
-def username() {
-    withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        return USERNAME
-    }
-}
-
-def password() {
-    withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        return PASSWORD
-    }
-}
-
 node('maven') {
 
 	def developmentVersion;
 	def releaseVersion
 	
 	stage("checkout") {
-		git branch: "master", url: "https://github.com/Estafet-LTD/estafet-microservices-scrum-lib"
+		git branch: "master", url: "https://github.com/Estafet-LTD/estafet-microservices-scrum-lib", credentialsId: 'microservices-scrum'
 	}
 	
 	stage("increment version") {
@@ -27,12 +15,6 @@ node('maven') {
 	}
 	
 	stage("perform release") {
-	 	writeFile (file:".microservices-scrum-credentials", text:"https://${username()}:${password()}@github.com")
-	 	def creds = readFile('.microservices-scrum-credentials')
-	 	println creds
-        sh "git config --global user.email \"jenkins@estafet.com\""
-        sh "git config --global user.name \"jenkins\""
-        sh "git config --global credential.helper 'store --file .microservices-scrum-credentials'"
         withMaven(mavenSettingsConfig: 'microservices-scrum') {
 			sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}"
 		} 
