@@ -16,11 +16,11 @@ node('maven') {
 	
 	stage("perform release") {
 		 withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-		 	def = new File("~/.microservices-scrum-credentials")
+		 	def credentialsFile = new File("~/.microservices-scrum-credentials")
 		 	def credentials = new Properties()
 			credentials.setProperty('username', env.USERNAME)
 			credentials.setProperty('password', env.PASSWORD)
-			propsFile.withWriterAppend( 'UTF-8' ) { fileWriter ->
+			credentialsFile.withWriterAppend( 'UTF-8' ) { fileWriter ->
 			    fileWriter.writeLine ''
 			    credentials.each { key, value ->
 			        fileWriter.writeLine "$key=$value"
