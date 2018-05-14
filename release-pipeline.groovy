@@ -30,8 +30,8 @@ node('maven') {
         sh "git config --global user.email \"jenkins@estafet.com\""
         sh "git config --global user.name \"jenkins\""
         withMaven(mavenSettingsConfig: 'microservices-scrum') {
-			sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion} -DpushChanges=false -DlocalCheckout=true -DpreparationGoals=initialize -B"
-			sh "git push ${releaseVersion}"
+			sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion} -DpushChanges=true -DlocalCheckout=true -DpreparationGoals=initialize -B"
+			//sh "git push https://${username()}:${password()}@github.com/Estafet-LTD/estafet-microservices-scrum-lib"
 		} 
 	}	
 	
