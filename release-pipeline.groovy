@@ -1,22 +1,10 @@
-def username() {
-    withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        return USERNAME
-    }
-}
-
-def password() {
-    withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        return PASSWORD
-    }
-}
-
 node('maven') {
 
 	def developmentVersion;
 	def releaseVersion
 	
 	stage("checkout") {
-		git branch: "master", url: "https://${username()}:${password()}@github.com/Estafet-LTD/estafet-microservices-scrum-lib"
+		git branch: "master", url: "https://github.com/Estafet-LTD/estafet-microservices-scrum-lib", credentialsId: "microservices-scrum"
 	}
 	
 	stage("increment version") {
