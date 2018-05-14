@@ -16,7 +16,7 @@ node('maven') {
 	def releaseVersion
 	
 	stage("checkout") {
-		git branch: "master", url: "https://github.com/Estafet-LTD/estafet-microservices-scrum-lib"
+		git branch: "master", url: "https://${username()}:${password()}@github.com/Estafet-LTD/estafet-microservices-scrum-lib"
 	}
 	
 	stage("increment version") {
@@ -27,11 +27,8 @@ node('maven') {
 	}
 	
 	stage("perform release") {
-		sh "git remote set-url origin https://${username()}:${password()}@github.com/Estafet-LTD/estafet-microservices-scrum-lib"
-        sh "git config --global user.email \"jenkins@estafet.com\""
-        sh "git config --global user.name \"jenkins\""
         withMaven(mavenSettingsConfig: 'microservices-scrum') {
-			sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}"
+			sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion} -DpushChanges=false -DlocalCheckout=true -DpreparationGoals=initialize -B"
 		} 
 	}	
 	
