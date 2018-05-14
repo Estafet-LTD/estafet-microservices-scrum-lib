@@ -2,7 +2,7 @@ node('maven') {
 
 	def developmentVersion;
 	def releaseVersion
-
+	
 	stage("checkout") {
 		git branch: "master", url: "https://github.com/Estafet-LTD/estafet-microservices-scrum-lib"
 	}
@@ -15,9 +15,13 @@ node('maven') {
 	}
 	
 	stage("perform release") {
-		withMaven(mavenSettingsConfig: 'microservices-scrum') {
- 			sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}"
-		} 
+		 withCredentials([usernamePassword(credentialsId: 'microservices-scrum', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            sh "git config --global user.email \"jenkins@estafet.com\""
+            sh "git config --global user.name \"${env.USERNAME}\""
+            withMaven(mavenSettingsConfig: 'microservices-scrum') {
+ 				sh "mvn release:clean release:prepare release:perform -DreleaseVersion=${releaseVersion} -DdevelopmentVersion=${developmentVersion}"
+			} 
+        }
 	}	
 	
 }
