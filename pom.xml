@@ -12,6 +12,7 @@
 
 	<modules>
 		<module>estafet-microservices-scrum-lib-pageobjects</module>
+		<module>estafet-microservices-scrum-lib-data</module>
 	</modules>
 
 	<profiles>
