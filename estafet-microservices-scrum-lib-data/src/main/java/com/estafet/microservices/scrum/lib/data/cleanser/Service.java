@@ -1,14 +1,14 @@
 package com.estafet.microservices.scrum.lib.data.cleanser;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
+import java.util.stream.Collectors;
 
 import com.google.common.io.Resources;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -81,12 +81,21 @@ public class Service {
 	}
 
 	private List<String> getStatements(String filename) {
+		BufferedReader reader = null;
 		try {
-			return FileUtils.readLines(new File(Resources.getResource(filename).getPath()));
+			reader = new BufferedReader(new InputStreamReader(Resources.getResource(filename).openStream()));
+			return reader.lines().collect(Collectors.toList());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
 		}
-
 	}
 
 }
