@@ -7,6 +7,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
@@ -19,6 +21,10 @@ public abstract class Page {
 
 	private final WebDriver driver;
 	private final URL url;
+	
+	private final String regExSpecialChars = ":/<([{\\^-=$!|]})?*+.>";
+	private final String regExSpecialCharsRE = regExSpecialChars.replaceAll( ".", "\\\\$0");
+	private final Pattern reCharsREP = Pattern.compile( "[" + regExSpecialCharsRE + "]");
 
 	public Page(WebDriver driver) {
 		this.driver = driver;
@@ -58,8 +64,19 @@ public abstract class Page {
 	}
 
 	public boolean isLoaded() {
-		return url.toString().equals(driver.getCurrentUrl())
-				&& driver.getTitle().equals(title());
+		String currentUrl = driver.getCurrentUrl();
+		if (uri().contains("{1}")) {
+			String compare = escapeRegExChars(System.getenv("BASIC_UI_URI")) + escapeRegExChars(uri().replaceAll("\\{\\d+\\}", "REPLACE")).replaceAll("REPLACE", "\\\\d+");
+			return currentUrl.matches(compare) && driver.getTitle().equals(title());
+		} else {
+			return url.toString().equals(currentUrl)
+					&& driver.getTitle().equals(title());
+		}
+	}
+	
+	private String escapeRegExChars(String s) {
+	    Matcher m = reCharsREP.matcher( s);
+	    return m.replaceAll( "\\\\$0");
 	}
 	
 	public void close() {
@@ -101,7 +118,7 @@ public abstract class Page {
 	protected URL getUrl() {
 		return url;
 	}
-
+	
 	private String resolveUri(String... params) {
 		String uri = uri();
 		int index = 1;

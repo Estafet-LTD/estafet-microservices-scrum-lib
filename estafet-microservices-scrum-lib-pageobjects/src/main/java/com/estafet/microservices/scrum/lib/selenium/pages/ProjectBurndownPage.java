@@ -33,8 +33,8 @@ public class ProjectBurndownPage extends Page {
 		return "Simple Scrum Project Management";
 	}
 	
-	public ProjectsPage clickProjectsBreadCrumbLink() {
-		return click(projectsBreadcrumbLink, ProjectsPage.class);
+	public ProjectListPage clickProjectsBreadCrumbLink() {
+		return click(projectsBreadcrumbLink, ProjectListPage.class);
 	}
 	
 	public ProjectPage clickProjectBreadCrumbLink() {

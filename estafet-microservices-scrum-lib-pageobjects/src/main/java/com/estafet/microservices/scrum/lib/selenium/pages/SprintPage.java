@@ -72,8 +72,8 @@ public class SprintPage extends Page {
 		return click(sprintBurndownLink, SprintBurndownPage.class);
 	}
 	
-	public ProjectsPage clickProjectsBreadCrumbLink() {
-		return click(projectsBreadcrumbLink, ProjectsPage.class);
+	public ProjectListPage clickProjectsBreadCrumbLink() {
+		return click(projectsBreadcrumbLink, ProjectListPage.class);
 	}
 	
 	public ProjectPage clickProjectBreadCrumbLink() {

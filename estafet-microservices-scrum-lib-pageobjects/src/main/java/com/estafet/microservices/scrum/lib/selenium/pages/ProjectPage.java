@@ -40,6 +40,10 @@ public class ProjectPage extends Page {
 	@CacheLookup
 	WebElement projectBreadcrumbLink;
 	
+	@FindBy(xpath = "/html[1]/body[1]/div[1]/div[4]/div[2]/h2[1]/small[1]")
+	@CacheLookup
+	WebElement projectTitle;
+	
 	public ProjectPage(String projectId) {
 		super(projectId);
 	}
@@ -82,12 +86,16 @@ public class ProjectPage extends Page {
 		return click(sprintBurndownLink, SprintBurndownPage.class);
 	}
 	
-	public ProjectsPage clickProjectsBreadCrumbLink() {
-		return click(projectsBreadcrumbLink, ProjectsPage.class);
+	public ProjectListPage clickProjectsBreadCrumbLink() {
+		return click(projectsBreadcrumbLink, ProjectListPage.class);
 	}
 	
 	public ProjectPage clickProjectBreadCrumbLink() {
 		return click(projectBreadcrumbLink, ProjectPage.class);
+	}
+	
+	public String getProjectTitle() {
+		return projectTitle.getText();
 	}
 	
 }

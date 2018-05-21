@@ -32,28 +32,32 @@ public class Service {
 		return name;
 	}
 
-	public String getDbURLEnvVariable() {
-		return dbURLEnvVariable;
+	public String getDbURL() {
+		return System.getenv(dbURLEnvVariable);
 	}
 
-	public String getDbUserEnvVariable() {
-		return dbUserEnvVariable;
+	public String getDbUser() {
+		return System.getenv(dbUserEnvVariable);
 	}
 
-	public String getDbPasswordEnvVariable() {
-		return dbPasswordEnvVariable;
+	public String getDbPassword() {
+		return System.getenv(dbPasswordEnvVariable);
 	}
 
 	public void clean() {
+		System.out.println("Cleaning " + name + "...");
+		System.out.println(dbURLEnvVariable + " - " + getDbURL());
+		System.out.println(dbUserEnvVariable + " - " + getDbUser());
+		System.out.println(dbPasswordEnvVariable + " - " + getDbPassword());
 		Connection connection = null;
 		Statement statement = null;
 		try {
 			Class.forName("org.postgresql.Driver");
-			connection = DriverManager.getConnection(System.getenv(dbURLEnvVariable), System.getenv(dbUserEnvVariable),
-					System.getenv(dbPasswordEnvVariable));
+			connection = DriverManager.getConnection(getDbURL(), getDbUser(), getDbPassword());
 			statement = connection.createStatement();
 			executeDDL("drop", statement);
 			executeDDL("create", statement);
+			System.out.println("Successfully cleaned " + name + ".");
 		} catch (SQLException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -72,7 +76,6 @@ public class Service {
 
 	private void executeDDL(String prefix, Statement statement) throws SQLException {
 		for (String stmt : getStatements(prefix + "-" + name + "-db.ddl")) {
-			System.out.println(stmt);
 			statement.executeUpdate(stmt.replaceAll("\\;", ""));
 		}
 	}

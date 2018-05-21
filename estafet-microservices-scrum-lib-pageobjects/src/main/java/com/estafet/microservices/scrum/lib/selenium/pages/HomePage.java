@@ -10,8 +10,8 @@ public class HomePage extends Page {
 	@CacheLookup
 	WebElement projectsLink;
 		
-	public ProjectsPage clickHereLink() {
-		return click(projectsLink, ProjectsPage.class);
+	public ProjectListPage clickHereLink() {
+		return click(projectsLink, ProjectListPage.class);
 	}
 
 	@Override
