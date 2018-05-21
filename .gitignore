@@ -1,3 +1,4 @@
 /.settings/
 /.project
 /release-pipeline.groovy.bak
+/ci-pipeline.groovy.bak
