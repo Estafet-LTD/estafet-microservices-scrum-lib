@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>estafet-microservices-scrum</groupId>
 	<artifactId>estafet-microservices-scrum-lib</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6-SNAPSHOT</version>
 
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -105,7 +105,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/Estafet-LTD/estafet-microservices-scrum-lib.git</connection>
 		<developerConnection>scm:git:https://github.com/Estafet-LTD/estafet-microservices-scrum-lib.git</developerConnection>
-		<tag>estafet-microservices-scrum-lib-0.0.5</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 </project>
