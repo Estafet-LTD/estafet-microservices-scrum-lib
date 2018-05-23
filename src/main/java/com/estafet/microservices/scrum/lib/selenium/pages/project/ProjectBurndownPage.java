@@ -1,35 +1,33 @@
-package com.estafet.microservices.scrum.lib.selenium.pages;
+package com.estafet.microservices.scrum.lib.selenium.pages.project;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 
-public class SprintBurndownPage extends Page {
+import com.estafet.microservices.scrum.lib.selenium.pages.Page;
+
+public class ProjectBurndownPage extends Page {
 	
-	@CacheLookup
 	@FindBy(linkText = "Projects")
+	@CacheLookup
 	WebElement projectsBreadcrumbLink;
 	
-	@CacheLookup
 	@FindBy(linkText = "Project")
-	WebElement projectBreadcrumbLink;
-	
 	@CacheLookup
-	@FindBy(linkText = "Sprint")
-	WebElement sprintBreadcrumbLink;
+	WebElement projectBreadcrumbLink;
 		
-	public SprintBurndownPage(String projectId, String sprintId) {
-		super(projectId, sprintId);
+	public ProjectBurndownPage(String projectId) {
+		super(projectId);
 	}
 
-	public SprintBurndownPage(WebDriver driver) {
+	public ProjectBurndownPage(WebDriver driver) {
 		super(driver);
 	}
 
 	@Override
 	public String uri() {
-		return "/project/{1}/sprint/{2}/burndown";
+		return "/project/{1}/burndown/";
 	}
 	
 	@Override
@@ -43,10 +41,6 @@ public class SprintBurndownPage extends Page {
 	
 	public ProjectPage clickProjectBreadCrumbLink() {
 		return click(projectBreadcrumbLink, ProjectPage.class);
-	}
-	
-	public SprintPage clickSprintBreadCrumbLink() {
-		return click(sprintBreadcrumbLink, SprintPage.class);
 	}
 	
 }

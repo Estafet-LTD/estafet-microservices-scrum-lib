@@ -1,4 +1,4 @@
-package com.estafet.microservices.scrum.lib.selenium.pages;
+package com.estafet.microservices.scrum.lib.selenium.pages.sprint;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

@@ -1,4 +1,4 @@
-package com.estafet.microservices.scrum.lib.selenium.pages;
+package com.estafet.microservices.scrum.lib.selenium.pages.project;
 
 import java.util.List;
 
@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
+
+import com.estafet.microservices.scrum.lib.selenium.pages.Page;
 
 public class ProjectListPage extends Page {
 

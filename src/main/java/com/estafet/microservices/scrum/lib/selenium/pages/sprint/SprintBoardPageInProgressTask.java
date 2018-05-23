@@ -1,8 +1,10 @@
-package com.estafet.microservices.scrum.lib.selenium.pages;
+package com.estafet.microservices.scrum.lib.selenium.pages.sprint;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import com.estafet.microservices.scrum.lib.selenium.pages.task.UpdateTaskHoursPage;
 
 public class SprintBoardPageInProgressTask {
 

@@ -1,9 +1,12 @@
-package com.estafet.microservices.scrum.lib.selenium.pages;
+package com.estafet.microservices.scrum.lib.selenium.pages.task;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
+
+import com.estafet.microservices.scrum.lib.selenium.pages.Page;
+import com.estafet.microservices.scrum.lib.selenium.pages.story.StoryPage;
 
 public class AddTaskPage extends Page {
 
