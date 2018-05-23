@@ -1,12 +1,13 @@
 package com.estafet.microservices.scrum.lib.data.story;
 
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 public class StoryBuilder {
 
-	private String title;
+	private String title= "my title";
 
-	private String description;
+	private String description = "my description";
 
 	private Integer storypoints;
 
@@ -40,10 +41,17 @@ public class StoryBuilder {
 	}
 
 	public Story build() {
-		return new RestTemplate().postForObject(System.getenv("STORY_API_SERVICE_URI") + "/project/{id}/story",
-				new Story().setDescription(description).setSprintId(sprintId).setTitle(title)
-						.setStorypoints(storypoints),
-				Story.class, projectId);
+		try {
+			return new RestTemplate().postForObject(System.getenv("STORY_API_SERVICE_URI") + "/project/{id}/story",
+					new Story().setDescription(description).setTitle(title).setStorypoints(storypoints),
+					Story.class, projectId);
+		} finally {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 }

@@ -26,9 +26,17 @@ public class ProjectBuilder {
 	}
 
 	public Project build() {
-		return new RestTemplate().postForObject(System.getenv("PROJECT_API_SERVICE_URI") + "/project",
-				new Project().setTitle(title).setSprintLengthDays(sprintLengthDays).setNoSprints(noSprints),
-				Project.class);
+		try {
+			return new RestTemplate().postForObject(System.getenv("PROJECT_API_SERVICE_URI") + "/project",
+					new Project().setTitle(title).setSprintLengthDays(sprintLengthDays).setNoSprints(noSprints),
+					Project.class);
+		} finally {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 }
