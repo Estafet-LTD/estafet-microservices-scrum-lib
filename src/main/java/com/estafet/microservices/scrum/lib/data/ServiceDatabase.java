@@ -1,4 +1,4 @@
-package com.estafet.microservices.scrum.lib.data.cleanser;
+package com.estafet.microservices.scrum.lib.data;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,9 +12,10 @@ import java.util.stream.Collectors;
 
 import com.google.common.io.Resources;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 @XStreamAlias(value = "service")
-public class Service {
+public class ServiceDatabase {
 
 	@XStreamAlias(value = "name")
 	private String name;
@@ -27,6 +28,12 @@ public class Service {
 
 	@XStreamAlias(value = "db-password-env")
 	private String dbPasswordEnvVariable;
+	
+	@XStreamOmitField
+	Connection connection;
+
+	@XStreamOmitField
+	Statement statement;
 
 	public String getName() {
 		return name;
@@ -44,33 +51,56 @@ public class Service {
 		return System.getenv(dbPasswordEnvVariable);
 	}
 
-	public void clean() {
-		System.out.println("Cleaning " + name + "...");
-		System.out.println(dbURLEnvVariable + " - " + getDbURL());
-		System.out.println(dbUserEnvVariable + " - " + getDbUser());
-		System.out.println(dbPasswordEnvVariable + " - " + getDbPassword());
-		Connection connection = null;
-		Statement statement = null;
+	public void init() {
+		System.out.println("Connecting " + name + "...");
+//		System.out.println(dbURLEnvVariable + " - " + getDbURL());
+//		System.out.println(dbUserEnvVariable + " - " + getDbUser());
+//		System.out.println(dbPasswordEnvVariable + " - " + getDbPassword());
 		try {
 			Class.forName("org.postgresql.Driver");
 			connection = DriverManager.getConnection(getDbURL(), getDbUser(), getDbPassword());
 			statement = connection.createStatement();
+		} catch (ClassNotFoundException | SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public boolean exists(String table, String key, Integer value) {
+		try {
+			String sqlselect = "select " + key + " from " + table + " where " + key + " = " + value;
+			System.out.println("Executing " + sqlselect + "...");
+			return statement.executeQuery(sqlselect).next();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			close();
+		}
+	}
+	
+	public void clean() {
+		System.out.println("Cleaning " + name + "...");
+		try {
 			executeDDL("drop", statement);
 			executeDDL("create", statement);
 			System.out.println("Successfully cleaned " + name + ".");
-		} catch (SQLException | ClassNotFoundException e) {
+		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
-			try {
-				if (statement != null) {
-					statement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
+			close();
+		}
+	}
+	
+	public void close() {
+		try {
+			System.out.println("Disconnected " + name + ".");
+			if (statement != null) {
+				statement.close();
 			}
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

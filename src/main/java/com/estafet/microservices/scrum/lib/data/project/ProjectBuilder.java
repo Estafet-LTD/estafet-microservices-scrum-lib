@@ -2,6 +2,8 @@ package com.estafet.microservices.scrum.lib.data.project;
 
 import org.springframework.web.client.RestTemplate;
 
+import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
+
 public class ProjectBuilder {
 
 	private String title;
@@ -26,17 +28,23 @@ public class ProjectBuilder {
 	}
 
 	public Project build() {
-		try {
-			return new RestTemplate().postForObject(System.getenv("PROJECT_API_SERVICE_URI") + "/project",
-					new Project().setTitle(title).setSprintLengthDays(sprintLengthDays).setNoSprints(noSprints),
-					Project.class);
-		} finally {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+		Project project =  new RestTemplate().postForObject(System.getenv("PROJECT_API_SERVICE_URI") + "/project",
+				new Project().setTitle(title).setSprintLengthDays(sprintLengthDays).setNoSprints(noSprints),
+				Project.class);
+		
+		new PollingEventValidator() {
+			public boolean success() {
+				return !project.getSprints().isEmpty();
 			}
-		}
+		};
+		
+		new PollingEventValidator() {
+			public boolean success() {
+				return project.getBurndown() != null;
+			}
+		};
+		
+		return project;
 	}
 
 }

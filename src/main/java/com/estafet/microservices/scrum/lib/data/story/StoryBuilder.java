@@ -1,7 +1,9 @@
 package com.estafet.microservices.scrum.lib.data.story;
 
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
+import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
+import com.estafet.microservices.scrum.lib.data.ServiceDatabases;
 
 public class StoryBuilder {
 
@@ -10,8 +12,6 @@ public class StoryBuilder {
 	private String description = "my description";
 
 	private Integer storypoints;
-
-	private Integer sprintId;
 
 	private Integer projectId;
 
@@ -30,28 +30,21 @@ public class StoryBuilder {
 		return this;
 	}
 
-	public StoryBuilder setSprintId(Integer sprintId) {
-		this.sprintId = sprintId;
-		return this;
-	}
-
 	public StoryBuilder setProjectId(Integer projectId) {
 		this.projectId = projectId;
 		return this;
 	}
 
 	public Story build() {
-		try {
-			return new RestTemplate().postForObject(System.getenv("STORY_API_SERVICE_URI") + "/project/{id}/story",
-					new Story().setDescription(description).setTitle(title).setStorypoints(storypoints),
-					Story.class, projectId);
-		} finally {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+		Story story = new RestTemplate().postForObject(System.getenv("STORY_API_SERVICE_URI") + "/project/{id}/story",
+				new Story().setDescription(description).setTitle(title).setStorypoints(storypoints),
+				Story.class, projectId);
+		new PollingEventValidator() {
+			public boolean success() {
+				return ServiceDatabases.exists("task-api", "story", "story_id", story.getId());
 			}
-		}
+		};
+		return story;		
 	}
 
 }

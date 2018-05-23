@@ -53,6 +53,11 @@ public class Task {
 		return remainingUpdated;
 	}
 	
+	public static Task getTask(Integer taskId) {
+		return new RestTemplate().getForObject(System.getenv("TASK_API_SERVICE_URI") + "/task/{id}",
+				Task.class, taskId);
+	}
+	
 	private String getLastSprintDay() {
 		List<String> days = new RestTemplate().getForObject(System.getenv("SPRINT_API_SERVICE_URI") + "/sprint/{id}/days",
 				List.class, sprintId);
@@ -62,21 +67,11 @@ public class Task {
 	public void claim() {
 		new RestTemplate().postForObject(System.getenv("TASK_API_SERVICE_URI") + "/task/{id}/claim", null,
 				Task.class, id);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
 	}
 	
 	public void complete() {
 		new RestTemplate().postForObject(System.getenv("TASK_API_SERVICE_URI") + "/task/{id}/complete", getLastSprintDay(),
 				Task.class, id);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	Task setTitle(String title) {

@@ -3,6 +3,9 @@ package com.estafet.microservices.scrum.lib.data.sprint;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.client.RestTemplate;
+
+import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
 import com.estafet.microservices.scrum.lib.data.project.Project;
 import com.estafet.microservices.scrum.lib.data.story.Story;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -58,6 +61,20 @@ public class Sprint {
 		return "Sprint#" + id;
 	}
 	
+	public static Sprint getSprint(Integer sprintId) {
+		return new RestTemplate().getForObject(System.getenv("SPRINT_API_SERVICE_URI") + "/sprint/{id}",
+				Sprint.class, sprintId);
+	}
+	
+	public Story getStory(int storyId) {
+		for (Story story : getStories()) {
+			if (story.getId() == storyId) {
+				return story;
+			}
+		}
+		return null;
+	}
+	
 	public List<Story> getStories() {
 		List<Story> stories = new ArrayList<Story>();
 		for (Story story : Project.getProjectById(projectId).getStories()) {
@@ -72,11 +89,11 @@ public class Sprint {
 		for (Story story : getStories()) {
 			story.complete();
 		}
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+		new PollingEventValidator() {
+			public boolean success() {
+				return Sprint.getSprint(id).getStatus().equals("Completed") && Sprint.getSprint(id+1) != null;
+			}
+		};
 	}
 
 }

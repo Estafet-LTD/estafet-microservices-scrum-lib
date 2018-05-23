@@ -2,6 +2,9 @@ package com.estafet.microservices.scrum.lib.data.task;
 
 import org.springframework.web.client.RestTemplate;
 
+import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
+import com.estafet.microservices.scrum.lib.data.story.Story;
+
 public class TaskBuilder {
 
 	private String title = "my title";
@@ -13,17 +16,16 @@ public class TaskBuilder {
 	private Integer storyId;
 
 	public Task build() {
-		try {
-			return new RestTemplate().postForObject(System.getenv("TASK_API_SERVICE_URI") + "/story/{id}/task",
-					new Task().setTitle(title).setDescription(description).setInitialHours(initialHours), Task.class,
-					storyId);
-		} finally {
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+		Task task = new RestTemplate().postForObject(System.getenv("TASK_API_SERVICE_URI") + "/story/{id}/task",
+				new Task().setTitle(title).setDescription(description).setInitialHours(initialHours), Task.class,
+				storyId);
+		new PollingEventValidator() {
+			public boolean success() {
+				Story story = Story.getStory(storyId);
+				return story.getStatus().equals("In Progress") || story.getStatus().equals("Planning");
 			}
-		}
+		};
+		return task;
 	}
 
 	public TaskBuilder setTitle(String title) {
