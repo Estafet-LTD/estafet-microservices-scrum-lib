@@ -45,7 +45,7 @@ public abstract class Page {
 			this.url = new URL(System.getenv("BASIC_UI_URI") + resolveUri(params));
 			Capabilities capabilities = DesiredCapabilities.htmlUnitWithJs();
 			driver = new HtmlUnitDriver(capabilities);
-			driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 			PageFactory.initElements(driver, this);
 			driver.get(url.toString());
 			if (!isLoaded()) {

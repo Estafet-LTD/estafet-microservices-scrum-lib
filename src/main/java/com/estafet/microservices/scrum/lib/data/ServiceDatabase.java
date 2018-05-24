@@ -83,8 +83,6 @@ public class ServiceDatabase {
 			executeDDL("drop", statement);
 			executeDDL("create", statement);
 			System.out.println("Successfully cleaned " + name + ".");
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
 		} finally {
 			close();
 		}
@@ -104,9 +102,17 @@ public class ServiceDatabase {
 		}
 	}
 
-	private void executeDDL(String prefix, Statement statement) throws SQLException {
+	private void executeDDL(String prefix, Statement statement) {
 		for (String stmt : getStatements(prefix + "-" + name + "-db.ddl")) {
-			statement.executeUpdate(stmt.replaceAll("\\;", ""));
+			try {
+				statement.executeUpdate(stmt.replaceAll("\\;", ""));
+			} catch (SQLException e) {
+				if (prefix.equals("create")) {
+					throw new RuntimeException(e);	
+				} else {
+					System.out.println("Warning - " + e.getMessage());
+				}
+			}
 		}
 	}
 

@@ -1,5 +1,13 @@
 package com.estafet.microservices.scrum.lib.data;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 public abstract class PollingEventValidator {
 
 	abstract public boolean success();
@@ -9,18 +17,21 @@ public abstract class PollingEventValidator {
 	}
 	
 	public PollingEventValidator(int timeout) {
-		int wait = 0;
-		while (!success()) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-			wait+= 500;
-			if (wait >= timeout) {
-				throw new RuntimeException("Timeout");
-			}
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		Future<String> future = executor.submit(new Callable<String>() {
+		    public String call() throws Exception {
+		    	while (!success()) {
+					Thread.currentThread().sleep(100);
+				}
+		        return "OK";
+		    }
+		});
+		try {
+			future.get(timeout, TimeUnit.MILLISECONDS);
+		} catch (InterruptedException | ExecutionException | TimeoutException e) {
+			throw new RuntimeException(e);
 		}
+		
 	}
 	
 }

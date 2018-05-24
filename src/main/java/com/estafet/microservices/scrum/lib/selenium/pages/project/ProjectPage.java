@@ -108,4 +108,7 @@ public class ProjectPage extends Page {
 		return projectTitle.getText();
 	}
 	
+	public Integer getProjectId() {
+		return Integer.parseInt(getCurrentURI().replaceAll("\\/project\\/", ""));
+	}
 }

@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.web.client.RestTemplate;
 
+import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
+import com.estafet.microservices.scrum.lib.data.ServiceDatabases;
 import com.estafet.microservices.scrum.lib.data.sprint.Sprint;
 import com.estafet.microservices.scrum.lib.data.story.Story;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -132,6 +134,30 @@ public class Project {
 			}
 		}
 		return null;
+	}
+	
+	public void newProjectWait() {
+		
+		new PollingEventValidator() {
+			public boolean success() {
+				List<Sprint> sprints = getSprints();
+				return !sprints.isEmpty() && sprints.get(0).getStatus().equals("Active");
+			}
+		};
+		
+		new PollingEventValidator() {
+			public boolean success() {
+				return ServiceDatabases.exists("project-burndown", "project_burndown", "project_burndown_id", id);
+			}
+		};
+		
+		Integer sprintId = getSprints().get(0).getId();
+		
+		new PollingEventValidator() {
+			public boolean success() {
+				return ServiceDatabases.exists("sprint-burndown", "sprint", "sprint_id", sprintId);
+			}
+		};
 	}
 
 	Project setId(Integer id) {
