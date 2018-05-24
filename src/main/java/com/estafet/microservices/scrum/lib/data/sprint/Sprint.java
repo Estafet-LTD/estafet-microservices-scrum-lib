@@ -75,6 +75,14 @@ public class Sprint {
 		return null;
 	}
 	
+	@JsonIgnore
+	public SprintBurndown getSprintBurndown() {
+		SprintBurndown burndown = new RestTemplate().getForObject(System.getenv("SPRINT_BURNDOWN_SERVICE_URI") + "/sprint/{id}/burndown",
+				SprintBurndown.class, id);
+		return burndown;
+	}
+	
+	@JsonIgnore
 	public List<Story> getStories() {
 		List<Story> stories = new ArrayList<Story>();
 		for (Story story : Project.getProjectById(projectId).getStories()) {

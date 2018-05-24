@@ -9,9 +9,21 @@ import com.estafet.microservices.scrum.lib.selenium.pages.Page;
 
 public class NewProjectPage extends Page {
 
-	@FindBy(css = "input")
+	@FindBy(xpath = "//input[@type='submit']")
 	@CacheLookup
 	WebElement submitButton;
+	
+	@FindBy(xpath = "//input[@id='title']")
+	@CacheLookup
+	WebElement titleField;
+	
+	@FindBy(xpath = "//input[@id='noSprints']")
+	@CacheLookup
+	WebElement noSprintsField;
+	
+	@FindBy(xpath = "//input[@id='sprintLengthDays']")
+	@CacheLookup
+	WebElement sprintLengthDaysField;
 	
 	public NewProjectPage() {
 		super();
@@ -33,6 +45,21 @@ public class NewProjectPage extends Page {
 	@Override
 	public String uri() {
 		return "/newproject";
+	}
+	
+	public NewProjectPage setProjectTitle(String title) {
+		setField(titleField, title);
+		return this;
+	}
+	
+	public NewProjectPage setNoSprints(int noSprints) {
+		setField(noSprintsField, noSprints);
+		return this;
+	}
+	
+	public NewProjectPage setSprintLengthDays(int sprintLength) {
+		setField(sprintLengthDaysField, sprintLength);
+		return this;
 	}
 
 }

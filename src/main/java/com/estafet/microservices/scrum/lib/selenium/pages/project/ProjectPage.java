@@ -22,15 +22,15 @@ public class ProjectPage extends Page {
 	@CacheLookup
 	List<WebElement> storyLinks;
 	
-	@FindBy(linkText = "Project Burndown")
+	@FindBy(xpath = "//a[@id='project_burndown']")
 	@CacheLookup
 	WebElement projectBurndownLink;
 	
-	@FindBy(linkText = "Sprint Burndown")
+	@FindBy(xpath = "//a[@id='sprint_burndown']")
 	@CacheLookup
 	WebElement sprintBurndownLink;
 	
-	@FindBy(partialLinkText = "Sprint #")
+	@FindBy(xpath = "//a[@id='active_sprint']")
 	@CacheLookup
 	WebElement activeSprintLink;
 	
@@ -78,6 +78,10 @@ public class ProjectPage extends Page {
 	
 	public SprintPage clickActiveSprintLink() {
 		return click(activeSprintLink, SprintPage.class);
+	}
+	
+	public String getActiveSprintText() {
+		return activeSprintLink.getText();
 	}
 
 	public AddStoryPage clickAddStoryLink() {

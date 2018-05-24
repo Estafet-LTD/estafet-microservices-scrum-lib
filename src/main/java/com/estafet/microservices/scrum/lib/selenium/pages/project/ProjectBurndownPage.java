@@ -43,4 +43,8 @@ public class ProjectBurndownPage extends Page {
 		return click(projectBreadcrumbLink, ProjectPage.class);
 	}
 	
+	public Integer getProjectId() {
+		return Integer.parseInt(getCurrentURI().replaceAll("\\/project\\/", "").replaceAll("\\/burndown\\/", ""));
+	}
+	
 }

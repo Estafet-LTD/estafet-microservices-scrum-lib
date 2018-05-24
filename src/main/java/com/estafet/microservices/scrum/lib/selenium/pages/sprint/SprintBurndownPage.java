@@ -53,4 +53,8 @@ public class SprintBurndownPage extends Page {
 		return click(sprintBreadcrumbLink, SprintPage.class);
 	}
 	
+	public Integer getSprintId() {
+		return Integer.parseInt(getCurrentURI().replaceAll("\\/project\\/\\d+\\/sprint\\/", "").replaceAll("\\/burndown", ""));
+	}
+	
 }

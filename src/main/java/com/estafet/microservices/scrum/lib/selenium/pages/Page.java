@@ -83,6 +83,16 @@ public abstract class Page {
 		driver.close();
 	}
 
+	protected void setField(WebElement element, String value) {
+		element.clear();
+		element.sendKeys(value);
+	}
+	
+	protected void setField(WebElement element, Integer value) {
+		element.clear();
+		element.sendKeys(Integer.toString(value));
+	}
+	
 	protected <T extends Page> T click(WebElement element, Class<T> clazz) {
 		try {
 			element.click();
@@ -130,5 +140,10 @@ public abstract class Page {
 	}
 
 	public abstract String uri();
+
+	
+	public String getCurrentURI() {
+		return driver.getCurrentUrl().substring(System.getenv("BASIC_UI_URI").length());
+	}
 
 }
