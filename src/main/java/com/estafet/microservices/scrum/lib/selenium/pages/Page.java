@@ -67,7 +67,7 @@ public abstract class Page {
 		String currentUrl = driver.getCurrentUrl();
 		if (uri().contains("{1}")) {
 			String compare = escapeRegExChars(System.getenv("BASIC_UI_URI")) + escapeRegExChars(uri().replaceAll("\\{\\d+\\}", "REPLACE")).replaceAll("REPLACE", "\\\\d+");
-			return currentUrl.matches(compare) && driver.getTitle().equals(title());
+			return currentUrl.matches(compare) && driver.getTitle() != null && driver.getTitle().equals(title());
 		} else {
 			return url.toString().equals(currentUrl)
 					&& driver.getTitle().equals(title());
