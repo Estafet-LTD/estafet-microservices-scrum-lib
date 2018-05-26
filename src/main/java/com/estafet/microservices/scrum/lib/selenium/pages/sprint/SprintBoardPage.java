@@ -84,6 +84,24 @@ public class SprintBoardPage extends Page {
 	public List<SprintBoardPageToDoTask> getTodoTasks() {
 		return tasks(todoTasks, SprintBoardPageToDoTask.class);
 	}
+	
+	public SprintBoardPageInProgressTask getInProgressTask(String taskTitle) {
+		for (SprintBoardPageInProgressTask task : getInProgressTasks()) {
+			if (task.getTaskTitle().equals(taskTitle)) {
+				return task;
+			}
+		}
+		return null;
+	}
+	
+	public SprintBoardPageToDoTask getTodoTask(String taskTitle) {
+		for (SprintBoardPageToDoTask task : getTodoTasks()) {
+			if (task.getTaskTitle().equals(taskTitle)) {
+				return task;
+			}
+		}
+		return null;
+	}
 
 	public List<SprintBoardPageInProgressTask> getInProgressTasks() {
 		return tasks(inProgressTasks, SprintBoardPageInProgressTask.class);

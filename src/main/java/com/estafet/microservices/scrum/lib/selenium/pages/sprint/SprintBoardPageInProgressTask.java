@@ -29,7 +29,7 @@ public class SprintBoardPageInProgressTask {
 		return task.findElement(By.xpath(".//a")).getText().replaceAll("\\s+", " ").replaceAll("\\[", "").replaceAll("\\]", "");
 	}
 	
-	public String getName() {
+	public String getTaskTitle() {
 		return task.findElement(By.xpath(".//span")).getText();
 	}
 }

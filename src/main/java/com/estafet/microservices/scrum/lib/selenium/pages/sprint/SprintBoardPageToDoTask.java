@@ -15,11 +15,16 @@ public class SprintBoardPageToDoTask {
 	}
 	
 	public SprintBoardPage claim() {
-		return null;
+		task.findElement(By.xpath(".//div[3]/a[1]")).click();
+		return new SprintBoardPage(driver);
 	}
 	
-	public String getName() {
-		return task.findElement(By.xpath(".//span")).getText();
+	public String getTaskTitle() {
+		return task.findElement(By.xpath(".//div[1]/span[1]")).getText();
+	}
+	
+	public String getStoryTitle() {
+		return task.findElement(By.xpath(".//div[2]/em[1]/span[1]")).getText();
 	}
 	
 }
