@@ -14,7 +14,7 @@ public class SprintBoardPageCompletedTask {
 		this.driver = driver;
 	}
 	
-	public String getName() {
+	public String getTaskTitle() {
 		return task.findElement(By.xpath(".//span")).getText();
 	}
 	

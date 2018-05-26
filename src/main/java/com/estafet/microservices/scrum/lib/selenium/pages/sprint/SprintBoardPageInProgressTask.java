@@ -17,11 +17,12 @@ public class SprintBoardPageInProgressTask {
 	}
 		
 	public SprintBoardPage complete() {
-		return null;
+		task.findElement(By.xpath(".//div[3]/a[1]")).click();
+		return new SprintBoardPage(driver);
 	}
 	
-	public UpdateTaskHoursPage getHoursLink() {
-		task.findElement(By.xpath(".//a")).click();
+	public UpdateTaskHoursPage clickHoursLink() {
+		task.findElement(By.xpath(".//div[1]/a[1]")).click();
 		return new UpdateTaskHoursPage(driver);
 	}
 	

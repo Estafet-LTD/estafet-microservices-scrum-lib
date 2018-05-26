@@ -102,6 +102,15 @@ public class SprintBoardPage extends Page {
 		}
 		return null;
 	}
+	
+	public SprintBoardPageCompletedTask getCompleted(String taskTitle) {
+		for (SprintBoardPageCompletedTask task : getCompletedTasks()) {
+			if (task.getTaskTitle().equals(taskTitle)) {
+				return task;
+			}
+		}
+		return null;
+	}
 
 	public List<SprintBoardPageInProgressTask> getInProgressTasks() {
 		return tasks(inProgressTasks, SprintBoardPageInProgressTask.class);
@@ -127,6 +136,14 @@ public class SprintBoardPage extends Page {
 
 	public String getName() {
 		return name.getText();
+	}
+	
+	public Integer getSprintId() {
+		return Integer.parseInt(getCurrentURI().replaceAll("\\/project\\/\\d+\\/sprint\\/", "").replaceAll("\\/board", ""));
+	}
+	
+	public Integer getProjectId() {
+		return Integer.parseInt(getCurrentURI().replaceAll("\\/project\\/", "").replaceAll("\\/sprint\\/\\d+\\/board", ""));
 	}
 
 }

@@ -7,12 +7,17 @@ import org.openqa.selenium.support.FindBy;
 
 import com.estafet.microservices.scrum.lib.selenium.pages.Page;
 import com.estafet.microservices.scrum.lib.selenium.pages.project.ProjectPage;
+import com.estafet.microservices.scrum.lib.selenium.pages.sprint.SprintBoardPage;
 
 public class UpdateTaskHoursPage extends Page {
 
-	@FindBy(css = "input")
+	@FindBy(xpath = "//input[@type='submit']")
 	@CacheLookup
 	WebElement submitButton;
+	
+	@FindBy(xpath = "//input[@id='remainingHours']")
+	@CacheLookup
+	WebElement remainingHoursField;
 	
 	public UpdateTaskHoursPage(String projectId, String sprintId, String taskId) {
 		super(projectId, sprintId, taskId);
@@ -22,8 +27,8 @@ public class UpdateTaskHoursPage extends Page {
 		super(driver);
 	}
 
-	public ProjectPage clickSubmitButton() {
-		return click(submitButton, ProjectPage.class);
+	public SprintBoardPage clickSubmitButton() {
+		return click(submitButton, SprintBoardPage.class);
 	}
 
 	@Override
@@ -34,6 +39,11 @@ public class UpdateTaskHoursPage extends Page {
 	@Override
 	public String title() {
 		return "Simple Scrum Project Management";
+	}
+
+	public UpdateTaskHoursPage setRemainingHours(int remainingHours) {
+		setField(remainingHoursField, remainingHours);
+		return this;
 	}
 
 }

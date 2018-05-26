@@ -2,6 +2,7 @@ package com.estafet.microservices.scrum.lib.selenium.pages.project;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
@@ -17,10 +18,22 @@ import com.estafet.microservices.scrum.lib.selenium.pages.story.StoryPage;
 public class ProjectPage extends Page {
 	
 	@FindBys({
-	    @FindBy(partialLinkText = "Story #")
+	    @FindBy(xpath = "//table[@id='backlog']/tbody/tr/td[1]/a")
 	})
 	@CacheLookup
 	List<WebElement> storyLinks;
+	
+	@FindBys({
+	    @FindBy(xpath = "//table[@id='completed_sprints']/tbody/tr/td[1]/a")
+	})
+	@CacheLookup
+	List<WebElement> completedSprintLinks;
+	
+	@FindBys({
+	    @FindBy(xpath = "//html//div[@id='backlog']//tr")
+	})
+	@CacheLookup
+	List<WebElement> stories;
 	
 	@FindBy(xpath = "//a[@id='project_burndown']")
 	@CacheLookup
@@ -72,6 +85,10 @@ public class ProjectPage extends Page {
 		return getTextList(storyLinks);
 	}
 	
+	public List<String> getCompletedSprints() {
+		return getTextList(completedSprintLinks);
+	}
+	
 	public StoryPage clickStoryLink(String story) {
 		return click(story, storyLinks, StoryPage.class);
 	}
@@ -102,6 +119,21 @@ public class ProjectPage extends Page {
 	
 	public ProjectPage clickProjectBreadCrumbLink() {
 		return click(projectBreadcrumbLink, ProjectPage.class);
+	}
+	
+	public String getStoryStatus(String storyTitle) {
+		int row = 0;
+		for (WebElement story : stories) {
+			if (row > 0) {
+				String storyLinkText = story.findElement(By.xpath(".//td[1]/a[1]")).getText();
+				String status = story.findElement(By.xpath(".//td[3]")).getText();
+				if (storyLinkText.equals(storyTitle)) {
+					return status;
+				}	
+			}
+			row++;
+		}
+		return null;
 	}
 	
 	public String getProjectTitle() {
