@@ -1,7 +1,9 @@
 package com.estafet.microservices.scrum.lib.selenium.pages.story;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
@@ -51,12 +53,10 @@ public class StoryPage extends Page {
 	@CacheLookup
 	WebElement storyBreadcrumbLink;
 	
-	@FindBys({
-		@FindBy(xpath = "/html[1]/body[1]/div[1]/div[4]/div[2]/div[6]/table[1]/tbody[1]/tr/td[1]")
-	})
+	@FindBy(xpath = "//tr[@id='task']")
 	@CacheLookup
 	List<WebElement> tasks;
-	
+		
 	@FindBys({
 	    @FindBy(xpath = "/html[1]/body[1]/div[1]/div[4]/div[2]/div[5]/ol[1]/li/span[1]")
 	})
@@ -88,7 +88,11 @@ public class StoryPage extends Page {
 	public String getName() {
 		return name.getText();
 	}
-		
+	
+	public Integer getPoints() {
+		return Integer.parseInt(points.getText());
+	}
+
 	public ProjectListPage clickProjectsBreadCrumbLink() {
 		return click(projectsBreadcrumbLink, ProjectListPage.class);
 	}
@@ -106,9 +110,31 @@ public class StoryPage extends Page {
 	}
 	
 	public List<String> getTasks() {
-		return getTextList(tasks);
+		List<String> list = new ArrayList<String>();
+		for (WebElement task : tasks) {
+			list.add(task.findElement(By.xpath(".//td[1]")).getText());
+		}
+		return list;
 	}
 	
+	public Integer getTaskInitialHours(String title) {
+		for (WebElement task : tasks) {
+			if (task.findElement(By.xpath(".//td[1]")).getText().equals(title)) {
+				return Integer.parseInt(task.findElement(By.xpath(".//td[3]")).getText());	
+			}
+		}	
+		return null;
+	}
+	
+	public Integer getTaskRemainingHours(String title) {
+		for (WebElement task : tasks) {
+			if (task.findElement(By.xpath(".//td[1]")).getText().equals(title)) {
+				return Integer.parseInt(task.findElement(By.xpath(".//td[4]")).getText());	
+			}
+		}	
+		return null;
+	}
+
 	public List<String> getAcceptanceCriteria() {
 		return getTextList(acceptanceCriteria);
 	}

@@ -2,7 +2,6 @@ package com.estafet.microservices.scrum.lib.data.project;
 
 import java.util.List;
 
-import com.estafet.microservices.scrum.lib.data.sprint.Sprint;
 import com.estafet.microservices.scrum.lib.data.story.Story;
 import com.estafet.microservices.scrum.lib.data.story.StoryBuilder;
 import com.estafet.microservices.scrum.lib.data.task.TaskBuilder;
@@ -37,18 +36,18 @@ public class ProjectCompleteDataSetBuilder {
 				.build();
 		}
 		String previousSprint = project.getActiveSprint().getName();
-		Sprint sprintObject = null;
 		for (int i = 1; i < data.size(); i++) {
 			String sprint = data.get(i).get(2);
 			String storyTitle = data.get(i).get(0);
 			if (!sprint.equals(previousSprint)) {
 				project.getSprint(previousSprint).complete();
+				project.getStory(storyTitle).addToSprint(project.getSprint(sprint).getId());
+			} else {
+				project.getStory(storyTitle).addToSprint(project.getSprint(previousSprint).getId());
 			}
-			sprintObject = project.getSprint(sprint);
-			project.getStory(storyTitle).addToSprint(sprintObject.getId());
 			previousSprint = sprint;
 		}
-		sprintObject.complete();
+		project.getSprint(previousSprint).complete();
 		return project;
 	}
 	

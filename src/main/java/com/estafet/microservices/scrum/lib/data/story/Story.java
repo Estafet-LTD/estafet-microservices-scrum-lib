@@ -85,7 +85,7 @@ public class Story {
 			public boolean success() {
 				return ServiceDatabases.exists("sprint-api", "story", "story_id", id);
 			}
-		};
+		}.start();
 	}
 
 	public void complete() {
@@ -97,7 +97,7 @@ public class Story {
 			public boolean success() {
 				return Story.getStory(id).getStatus().equals("Completed");
 			}
-		};
+		}.start();
 	}
 
 	Story setTitle(String title) {

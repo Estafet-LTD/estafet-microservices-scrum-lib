@@ -101,7 +101,7 @@ public class Sprint {
 			public boolean success() {
 				return Sprint.getSprint(id).getStatus().equals("Completed") && Sprint.getSprint(id+1) != null;
 			}
-		};
+		}.start();
 	}
 
 }

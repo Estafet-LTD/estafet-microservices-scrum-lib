@@ -15,10 +15,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public abstract class Page {
-
+	
 	private final WebDriver driver;
 	private final URL url;
 	
@@ -30,7 +32,7 @@ public abstract class Page {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 		try {
-			this.url = new URL(System.getenv("BASIC_UI_URI") + uri());
+			this.url = new URL(driver.getCurrentUrl());
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		}
@@ -57,7 +59,7 @@ public abstract class Page {
 	}
 
 	public abstract String title();
-
+	
 	public boolean isLoaded(String... params) {
 		String compare = System.getenv("BASIC_UI_URI") + resolveUri(params);
 		return compare.equals(driver.getCurrentUrl()) && driver.getTitle().equals(title());

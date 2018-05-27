@@ -10,10 +10,18 @@ import com.estafet.microservices.scrum.lib.selenium.pages.story.StoryPage;
 
 public class AddTaskPage extends Page {
 
-	@FindBy(css = "input")
+	@FindBy(xpath = "//input[@type='submit']")
 	@CacheLookup
 	WebElement submitButton;
 	
+	@FindBy(xpath = "//input[@id='title']")
+	@CacheLookup
+	WebElement titleField;
+	
+	@FindBy(xpath = "//input[@id='initialHours']")
+	@CacheLookup
+	WebElement estimateField;
+		
 	public AddTaskPage(String storyId) {
 		super(storyId);
 	}
@@ -33,7 +41,19 @@ public class AddTaskPage extends Page {
 
 	@Override
 	public String uri() {
-		return "/task/{1}";
+		return "/story/{1}/task";
 	}
+
+	public AddTaskPage setTitle(String title) {
+		setField(titleField, title);
+		return this;
+	}
+
+	public AddTaskPage setEstimate(int hours) {
+		setField(estimateField, hours);
+		return this;
+	}
+	
+	
 
 }

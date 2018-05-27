@@ -18,7 +18,7 @@ import com.estafet.microservices.scrum.lib.selenium.pages.story.StoryPage;
 public class ProjectPage extends Page {
 	
 	@FindBys({
-	    @FindBy(xpath = "//table[@id='backlog']/tbody/tr/td[1]/a")
+	    @FindBy(xpath = "//table[@id='backlog']//tr//a/span")
 	})
 	@CacheLookup
 	List<WebElement> storyLinks;
@@ -34,7 +34,7 @@ public class ProjectPage extends Page {
 	})
 	@CacheLookup
 	List<WebElement> stories;
-	
+		
 	@FindBy(xpath = "//a[@id='project_burndown']")
 	@CacheLookup
 	WebElement projectBurndownLink;

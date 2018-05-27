@@ -24,7 +24,7 @@ public class TaskBuilder {
 				Story story = Story.getStory(storyId);
 				return story.getStatus().equals("In Progress") || story.getStatus().equals("Planning");
 			}
-		};
+		}.start();
 		return task;
 	}
 

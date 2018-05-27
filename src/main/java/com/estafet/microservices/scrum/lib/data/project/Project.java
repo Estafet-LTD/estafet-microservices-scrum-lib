@@ -59,6 +59,7 @@ public class Project {
 		return null;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public static List<Project> getProjects() {
 		List objects = new RestTemplate().getForObject(System.getenv("PROJECT_API_SERVICE_URI") + "/projects",
 				List.class);
@@ -80,6 +81,7 @@ public class Project {
 		return burndown;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@JsonIgnore
 	public List<Sprint> getSprints() {
 		List objects = new RestTemplate().getForObject(System.getenv("SPRINT_API_SERVICE_URI") + "/project/{id}/sprints",
@@ -94,6 +96,7 @@ public class Project {
 		return sprints;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@JsonIgnore
 	public List<Story> getStories() {
 		List objects = new RestTemplate().getForObject(System.getenv("STORY_API_SERVICE_URI") + "/project/{id}/stories",
@@ -143,13 +146,13 @@ public class Project {
 				List<Sprint> sprints = getSprints();
 				return !sprints.isEmpty() && sprints.get(0).getStatus().equals("Active");
 			}
-		};
+		}.start();
 		
 		new WaitUntil() {
 			public boolean success() {
 				return ServiceDatabases.exists("project-burndown", "project_burndown", "project_burndown_id", id);
 			}
-		};
+		}.start();
 		
 		Integer sprintId = getSprints().get(0).getId();
 		
@@ -157,7 +160,7 @@ public class Project {
 			public boolean success() {
 				return ServiceDatabases.exists("sprint-burndown", "sprint", "sprint_id", sprintId);
 			}
-		};
+		}.start();
 	}
 
 	Project setId(Integer id) {

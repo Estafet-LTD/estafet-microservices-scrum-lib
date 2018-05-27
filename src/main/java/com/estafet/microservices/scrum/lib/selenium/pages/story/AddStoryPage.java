@@ -10,9 +10,17 @@ import com.estafet.microservices.scrum.lib.selenium.pages.project.ProjectPage;
 
 public class AddStoryPage extends Page {
 
-	@FindBy(css = "input")
+	@FindBy(xpath = "//input[@type='submit']")
 	@CacheLookup
 	WebElement submitButton;
+	
+	@FindBy(xpath = "//input[@id='title']")
+	@CacheLookup
+	WebElement storyTitleField;
+	
+	@FindBy(xpath = "//input[@id='storypoints']")
+	@CacheLookup
+	WebElement storyPointsField;
 	
 	public AddStoryPage(String projectId) {
 		super(projectId);
@@ -36,4 +44,16 @@ public class AddStoryPage extends Page {
 		return "/addstory/{1}";
 	}
 
+	public AddStoryPage setTitle(String title) {
+		setField(storyTitleField, title);
+		return this;
+	}
+
+	public AddStoryPage setStoryPointsField(int storyPoints) {
+		setField(storyPointsField, storyPoints);
+		return this;
+	}
+
+	
+	
 }

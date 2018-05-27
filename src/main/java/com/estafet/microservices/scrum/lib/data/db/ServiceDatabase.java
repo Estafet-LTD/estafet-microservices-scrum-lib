@@ -52,7 +52,7 @@ public class ServiceDatabase {
 	}
 
 	public void init() {
-		System.out.println("Connecting " + name + "...");
+//		System.out.println("Connecting " + name + "...");
 //		System.out.println(dbURLEnvVariable + " - " + getDbURL());
 //		System.out.println(dbUserEnvVariable + " - " + getDbUser());
 //		System.out.println(dbPasswordEnvVariable + " - " + getDbPassword());
@@ -68,7 +68,7 @@ public class ServiceDatabase {
 	public boolean exists(String table, String key, Integer value) {
 		try {
 			String sqlselect = "select " + key + " from " + table + " where " + key + " = " + value;
-			System.out.println("Executing " + sqlselect + "...");
+//			System.out.println("Executing " + sqlselect + "...");
 			return statement.executeQuery(sqlselect).next();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -78,7 +78,7 @@ public class ServiceDatabase {
 	}
 	
 	public void clean() {
-		System.out.println("Cleaning " + name + "...");
+//		System.out.println("Cleaning " + name + "...");
 		try {
 			executeDDL("drop", statement);
 			executeDDL("create", statement);
@@ -90,7 +90,7 @@ public class ServiceDatabase {
 	
 	public void close() {
 		try {
-			System.out.println("Disconnected " + name + ".");
+//			System.out.println("Disconnected " + name + ".");
 			if (statement != null) {
 				statement.close();
 			}

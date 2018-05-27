@@ -43,7 +43,7 @@ public class StoryBuilder {
 			public boolean success() {
 				return ServiceDatabases.exists("task-api", "story", "story_id", story.getId());
 			}
-		};
+		}.start();
 		return story;		
 	}
 

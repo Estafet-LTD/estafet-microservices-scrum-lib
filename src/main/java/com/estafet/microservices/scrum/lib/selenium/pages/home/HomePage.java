@@ -26,5 +26,10 @@ public class HomePage extends Page {
 	public String uri() {
 		return "/";
 	}
+	
+	public HomePage restart() {
+		this.close();
+		return new HomePage();
+	}
 
 }
