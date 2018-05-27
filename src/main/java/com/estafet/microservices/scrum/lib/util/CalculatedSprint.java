@@ -1,6 +1,6 @@
-package com.estafet.microservices.scrum.lib.date;
+package com.estafet.microservices.scrum.lib.util;
 
-import static com.estafet.microservices.scrum.lib.date.DateHelper.*;
+import static com.estafet.microservices.scrum.lib.util.DateHelper.*;
 
 import java.util.ArrayList;
 import java.util.List;

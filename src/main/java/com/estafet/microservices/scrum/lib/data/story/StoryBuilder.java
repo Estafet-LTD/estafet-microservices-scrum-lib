@@ -2,8 +2,8 @@ package com.estafet.microservices.scrum.lib.data.story;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
-import com.estafet.microservices.scrum.lib.data.ServiceDatabases;
+import com.estafet.microservices.scrum.lib.data.db.ServiceDatabases;
+import com.estafet.microservices.scrum.lib.util.WaitUntil;
 
 public class StoryBuilder {
 
@@ -39,7 +39,7 @@ public class StoryBuilder {
 		Story story = new RestTemplate().postForObject(System.getenv("STORY_API_SERVICE_URI") + "/project/{id}/story",
 				new Story().setDescription(description).setTitle(title).setStorypoints(storypoints),
 				Story.class, projectId);
-		new PollingEventValidator() {
+		new WaitUntil() {
 			public boolean success() {
 				return ServiceDatabases.exists("task-api", "story", "story_id", story.getId());
 			}

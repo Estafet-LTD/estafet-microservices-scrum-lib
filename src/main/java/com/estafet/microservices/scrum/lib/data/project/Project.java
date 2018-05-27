@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
-import com.estafet.microservices.scrum.lib.data.ServiceDatabases;
+import com.estafet.microservices.scrum.lib.data.db.ServiceDatabases;
 import com.estafet.microservices.scrum.lib.data.sprint.Sprint;
 import com.estafet.microservices.scrum.lib.data.story.Story;
+import com.estafet.microservices.scrum.lib.util.WaitUntil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -138,14 +138,14 @@ public class Project {
 	
 	public void newProjectWait() {
 		
-		new PollingEventValidator() {
+		new WaitUntil() {
 			public boolean success() {
 				List<Sprint> sprints = getSprints();
 				return !sprints.isEmpty() && sprints.get(0).getStatus().equals("Active");
 			}
 		};
 		
-		new PollingEventValidator() {
+		new WaitUntil() {
 			public boolean success() {
 				return ServiceDatabases.exists("project-burndown", "project_burndown", "project_burndown_id", id);
 			}
@@ -153,7 +153,7 @@ public class Project {
 		
 		Integer sprintId = getSprints().get(0).getId();
 		
-		new PollingEventValidator() {
+		new WaitUntil() {
 			public boolean success() {
 				return ServiceDatabases.exists("sprint-burndown", "sprint", "sprint_id", sprintId);
 			}

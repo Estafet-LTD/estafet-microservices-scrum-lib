@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
 import com.estafet.microservices.scrum.lib.data.project.Project;
 import com.estafet.microservices.scrum.lib.data.story.Story;
+import com.estafet.microservices.scrum.lib.util.WaitUntil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -97,7 +97,7 @@ public class Sprint {
 		for (Story story : getStories()) {
 			story.complete();
 		}
-		new PollingEventValidator() {
+		new WaitUntil() {
 			public boolean success() {
 				return Sprint.getSprint(id).getStatus().equals("Completed") && Sprint.getSprint(id+1) != null;
 			}

@@ -2,8 +2,8 @@ package com.estafet.microservices.scrum.lib.data.task;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
 import com.estafet.microservices.scrum.lib.data.story.Story;
+import com.estafet.microservices.scrum.lib.util.WaitUntil;
 
 public class TaskBuilder {
 
@@ -19,7 +19,7 @@ public class TaskBuilder {
 		Task task = new RestTemplate().postForObject(System.getenv("TASK_API_SERVICE_URI") + "/story/{id}/task",
 				new Task().setTitle(title).setDescription(description).setInitialHours(initialHours), Task.class,
 				storyId);
-		new PollingEventValidator() {
+		new WaitUntil() {
 			public boolean success() {
 				Story story = Story.getStory(storyId);
 				return story.getStatus().equals("In Progress") || story.getStatus().equals("Planning");

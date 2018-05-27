@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.web.client.RestTemplate;
 
-import com.estafet.microservices.scrum.lib.data.PollingEventValidator;
-import com.estafet.microservices.scrum.lib.data.ServiceDatabases;
+import com.estafet.microservices.scrum.lib.data.db.ServiceDatabases;
 import com.estafet.microservices.scrum.lib.data.sprint.Sprint;
 import com.estafet.microservices.scrum.lib.data.task.Task;
+import com.estafet.microservices.scrum.lib.util.WaitUntil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,7 +81,7 @@ public class Story {
 		this.sprintId = sprintId;
 		new RestTemplate().postForObject(System.getenv("STORY_API_SERVICE_URI") + "/add-story-to-sprint",
 				new AddSprintStory().setSprintId(sprintId).setStoryId(id), Story.class);
-		new PollingEventValidator() {
+		new WaitUntil() {
 			public boolean success() {
 				return ServiceDatabases.exists("sprint-api", "story", "story_id", id);
 			}
@@ -93,7 +93,7 @@ public class Story {
 			task.claim();
 			task.complete();
 		}
-		new PollingEventValidator() {
+		new WaitUntil() {
 			public boolean success() {
 				return Story.getStory(id).getStatus().equals("Completed");
 			}

@@ -1,4 +1,4 @@
-package com.estafet.microservices.scrum.lib.data;
+package com.estafet.microservices.scrum.lib.data.db;
 
 import java.io.BufferedReader;
 import java.io.IOException;

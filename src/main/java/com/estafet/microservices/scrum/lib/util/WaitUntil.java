@@ -1,16 +1,16 @@
-package com.estafet.microservices.scrum.lib.data;
+package com.estafet.microservices.scrum.lib.util;
 
-public abstract class PollingEventValidator {
+public abstract class WaitUntil {
 
 	private static final int DELAY = 500;
 	
 	abstract public boolean success();
 		
-	public PollingEventValidator() {
+	public WaitUntil() {
 		this(5000);
 	}
 	
-	public PollingEventValidator(int timeout) {
+	public WaitUntil(int timeout) {
 		try {
 			int wait = 0;
 			while (!success()) {

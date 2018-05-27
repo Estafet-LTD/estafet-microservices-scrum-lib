@@ -1,4 +1,4 @@
-package com.estafet.microservices.scrum.lib.date;
+package com.estafet.microservices.scrum.lib.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
