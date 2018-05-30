@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.web.client.RestTemplate;
 
 import com.estafet.microservices.scrum.lib.data.db.ServiceDatabases;
-import com.estafet.microservices.scrum.lib.data.sprint.Sprint;
 import com.estafet.microservices.scrum.lib.data.task.Task;
 import com.estafet.microservices.scrum.lib.util.WaitUntil;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -63,6 +62,7 @@ public class Story {
 				storyId);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List<Task> getTasks() {
 		List objects = new RestTemplate().getForObject(System.getenv("TASK_API_SERVICE_URI") + "/story/{storyId}/tasks",
 				List.class, id);

@@ -58,6 +58,7 @@ public class Task {
 				Task.class, taskId);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private String getLastSprintDay() {
 		List<String> days = new RestTemplate().getForObject(System.getenv("SPRINT_API_SERVICE_URI") + "/sprint/{id}/days",
 				List.class, sprintId);

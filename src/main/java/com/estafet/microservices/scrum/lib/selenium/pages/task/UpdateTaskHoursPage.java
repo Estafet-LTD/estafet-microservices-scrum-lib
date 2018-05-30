@@ -6,7 +6,6 @@ import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 
 import com.estafet.microservices.scrum.lib.selenium.pages.Page;
-import com.estafet.microservices.scrum.lib.selenium.pages.project.ProjectPage;
 import com.estafet.microservices.scrum.lib.selenium.pages.sprint.SprintBoardPage;
 
 public class UpdateTaskHoursPage extends Page {
